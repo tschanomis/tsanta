@@ -15,6 +15,11 @@ export function AuthForm({ registration = false }: { registration?: boolean }) {
         <h1 className="mt-3 text-3xl font-semibold">{registration ? "Créer mon compte" : "Se connecter"}</h1>
         <p className="mt-3 text-sm leading-6 text-zinc-600">{registration ? "Votre adresse email doit être autorisée pour créer votre compte." : "Première visite ? Inscrivez-vous pour créer votre mot de passe."}</p>
         <form action={action} className="mt-7 space-y-5" aria-busy={pending}>
+          {registration && (
+            <label className="block text-sm font-medium">Nom
+              <input className={inputClass} name="name" type="text" autoComplete="name" maxLength={100} required />
+            </label>
+          )}
           <label className="block text-sm font-medium">Adresse email
             <input className={inputClass} name="email" type="email" autoComplete="email" maxLength={254} required />
           </label>

@@ -6,11 +6,13 @@ CREATE TABLE IF NOT EXISTS allowed_emails (
 CREATE TABLE IF NOT EXISTS users (
   id uuid PRIMARY KEY,
   email text NOT NULL UNIQUE CHECK (email = lower(trim(email))),
+  name text,
   password_hash text NOT NULL,
   failed_attempts integer NOT NULL DEFAULT 0,
   locked_until timestamptz,
   created_at timestamptz NOT NULL DEFAULT now()
 );
+ALTER TABLE users ADD COLUMN IF NOT EXISTS name text;
 -- Préserve les comptes créés avec la version utilisant une liste TypeScript.
 INSERT INTO allowed_emails (email) SELECT email FROM users
 ON CONFLICT (email) DO NOTHING;

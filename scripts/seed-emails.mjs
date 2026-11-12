@@ -1,19 +1,21 @@
 import entries from '../.allowed-emails.json' with { type: 'json' };
 import pg from 'pg';
 
-async function main() {
-  if (!Array.isArray(entries)) throw new Error('Le fichier doit contenir un tableau d’objets { "email": "…" }.');
+function normalizeEmail(entry, index) {
+  if (!entry || typeof entry !== 'object' || typeof entry.email !== 'string') {
+    throw new Error(`Entrée ${index + 1} : propriété email manquante ou invalide.`);
+  }
 
-  const emails = [...new Set(entries.map((entry, index) => {
-    if (!entry || typeof entry !== 'object' || typeof entry.email !== 'string') {
-      throw new Error(`Entrée ${index + 1} : propriété email manquante ou invalide.`);
-    }
-    const email = entry.email.trim().toLowerCase();
-    if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      throw new Error(`Entrée ${index + 1} : adresse email invalide.`);
-    }
-    return email;
-  }))];
+  const email = entry.email.trim().toLowerCase();
+  if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error(`Entrée ${index + 1} : adresse email invalide.`);
+  }
+
+  return email;
+}
+
+async function main() {
+  const emails = [...new Set(entries.map(normalizeEmail))];
 
   if (!emails.length) {
     console.log('Aucun email à importer. Remplissez le fichier caché .allowed-emails.json.');

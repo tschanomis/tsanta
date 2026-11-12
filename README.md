@@ -4,6 +4,27 @@ Application Next.js avec authentification par email et mot de passe, réservée 
 
 ## Configuration
 
+### PostgreSQL local avec Docker
+
+Les variables `POSTGRES_USER`, `POSTGRES_PASSWORD` et `POSTGRES_DB` sont à définir dans `.env.local`, avec une `DATABASE_URL` correspondante (`postgresql://USER:PASSWORD@localhost:55432/DATABASE`).
+
+```sh
+docker compose --env-file .env.local up -d --wait
+npm run db:migrate
+```
+
+PostgreSQL est accessible uniquement en local sur le port 55432. Les données sont conservées dans le volume `postgres_data`. Pour arrêter le service sans effacer les données :
+
+```sh
+docker compose --env-file .env.local down
+```
+
+Les variables PostgreSQL initialisent le volume au premier démarrage ; les modifier ensuite ne change pas les identifiants d’une base déjà créée.
+
+Si le conteneur a été créé directement avec `docker run` sous le nom `santa-postgres`, utiliser `docker stop santa-postgres` et `docker start santa-postgres` pour le gérer. L’arrêter avant de démarrer le service Compose, qui utilise le même port.
+
+### Application
+
 1. Installer les dépendances avec `pnpm install`.
 2. Créer un fichier `.env.local` contenant `DATABASE_URL` (URL de connexion PostgreSQL). Ne pas versionner ce fichier. Utiliser TLS selon les exigences de votre hébergeur PostgreSQL.
 3. Exécuter `npm run db:migrate`. La migration crée les trois tables : `allowed_emails`, `users`, `sessions`. Elle rétablit aussi la relation entre utilisateurs et emails autorisés si la version avec liste TypeScript avait déjà été appliquée, en conservant les comptes existants.

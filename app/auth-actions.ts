@@ -20,16 +20,20 @@ function credentials(form: FormData) {
 }
 
 export async function register(_: AuthState, form: FormData): Promise<AuthState> {
+  const name = form.get("name");
+  if (typeof name !== "string" || !name.trim() || name.trim().length > 100) {
+    return { error: "Saisissez un nom de 1 à 100 caractères." };
+  }
   const input = credentials(form);
   if (!input) return { error: "Saisissez un email valide et un mot de passe de 12 à 128 caractères." };
   if (form.get("confirmation") !== input.password) return { error: "Les mots de passe ne correspondent pas." };
   try {
     const hash = await hashPassword(input.password);
     const result = await database().query<{ id: string }>(
-      `INSERT INTO users (id, email, password_hash)
-       SELECT $1, email, $3 FROM allowed_emails WHERE email = $2
+      `INSERT INTO users (id, email, password_hash, name)
+       SELECT $1, email, $3, $4 FROM allowed_emails WHERE email = $2
        ON CONFLICT (email) DO NOTHING RETURNING id`,
-      [randomUUID(), input.email, hash],
+      [randomUUID(), input.email, hash, name.trim()],
     );
     if (!result.rows[0]) return { error: "Inscription impossible pour cette adresse. Vérifiez votre invitation ou connectez-vous si vous avez déjà un compte." };
     await createSession(result.rows[0].id);
