@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { logout } from "@/app/auth-actions";
 import { database } from "@/lib/db";
@@ -22,11 +23,13 @@ async function RegisteredUsers() {
   return (
     <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {users.map((user) => (
-        <li key={user.id} className="flex items-center gap-4 rounded-xl border border-zinc-200 bg-zinc-50 p-5">
+        <li key={user.id}>
+          <Link href={`/utilisateurs/${user.id}`} className="flex h-full items-center gap-4 rounded-xl border border-zinc-200 bg-zinc-50 p-5 hover:border-emerald-300 hover:bg-emerald-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-800">
           <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-lg font-semibold text-emerald-800">
             {Array.from(user.name)[0].toLocaleUpperCase("fr")}
           </span>
           <p className="min-w-0 break-words font-medium">{user.name}</p>
+          </Link>
         </li>
       ))}
     </ul>
