@@ -59,6 +59,8 @@ La liste autorisée est stockée dans Postgres et alimentée par le script d’i
 
 ## Vérifications
 
+Les pages utilisent `lib/data/users.ts` pour lire les profils : ce module serveur vérifie la connexion, valide les identifiants et ne retourne que les champs nécessaires à l’affichage. Les pages gèrent le rendu, les états de chargement et les réponses 404. Les mutations d’authentification restent dans les Server Actions de `app/auth-actions.ts`. La lecture de l’utilisateur connecté est dédupliquée pendant le rendu serveur avec `React.cache`, sans cache partagé entre utilisateurs.
+
 ```sh
 npm run lint
 npx tsc --noEmit

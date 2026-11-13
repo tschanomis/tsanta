@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import { cache } from "react";
 import Credentials from "next-auth/providers/credentials";
 import { redirect } from "next/navigation";
 import { database } from "@/lib/db";
@@ -43,7 +44,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 });
 
-export async function currentUser(): Promise<{ id: string; email: string } | null> {
+export const currentUser = cache(async (): Promise<{ id: string; email: string } | null> => {
   const session = await auth();
   if (!session?.user?.id) return null;
   // Vérifier que le compte existe toujours, notamment après suppression de son invitation.
@@ -51,7 +52,7 @@ export async function currentUser(): Promise<{ id: string; email: string } | nul
     "SELECT id, email FROM users WHERE id = $1", [session.user.id],
   );
   return result.rows[0] ?? null;
-}
+});
 
 export async function requireUser() {
   const user = await currentUser();

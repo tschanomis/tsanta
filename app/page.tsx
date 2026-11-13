@@ -2,16 +2,12 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { logout } from "@/app/auth-actions";
-import { database } from "@/lib/db";
+import { getRegisteredUsers, type UserProfile } from "@/lib/data/users";
 
 async function RegisteredUsers() {
-  let users: { id: string; name: string }[];
+  let users: UserProfile[];
   try {
-    const result = await database().query<{ id: string; name: string }>(
-      `SELECT id, COALESCE(NULLIF(trim(name), ''), 'Nom non renseigné') AS name
-       FROM users ORDER BY lower(name), id`,
-    );
-    users = result.rows;
+    users = await getRegisteredUsers();
   } catch {
     return <p role="alert" className="mt-5 text-sm text-red-700">Impossible de charger les inscrits. Réessayez plus tard.</p>;
   }
