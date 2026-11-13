@@ -30,7 +30,12 @@ async function UserList({ params }: UserPageProps) {
             {items.map((item) => (
               <li key={item.id} className="rounded-xl border border-zinc-200 bg-zinc-50 p-5">
                 <h2 className="wrap-break-word text-lg font-semibold">{item.title}</h2>
-                <p className="mt-2 whitespace-pre-wrap wrap-break-word text-zinc-600">{item.description}</p>
+                {item.description && <p className="mt-2 whitespace-pre-wrap wrap-break-word text-zinc-600">{item.description}</p>}
+                {item.url && (
+                  <a href={item.url} title={item.url} target="_blank" rel="noopener noreferrer" className="mt-3 block truncate font-medium text-emerald-800 underline underline-offset-4">
+                    {item.url} <span className="sr-only">(nouvel onglet)</span>
+                  </a>
+                )}
               </li>
             ))}
           </ul>

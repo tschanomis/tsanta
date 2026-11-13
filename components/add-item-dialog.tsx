@@ -21,11 +21,14 @@ function ItemDialog({ onClose }: { onClose: () => void }) {
     <dialog ref={dialog} aria-labelledby="add-item-title" onClose={onClose} onCancel={(event) => { if (pending) event.preventDefault(); }} className="m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-2xl bg-white p-6 text-zinc-900 shadow-xl backdrop:bg-black/40 sm:p-8">
       <h2 id="add-item-title" className="text-2xl font-semibold">Ajouter un item</h2>
       <form action={action} aria-busy={pending} className="mt-6 space-y-5">
-        <label className="block text-sm font-medium">Titre
+        <label className="block text-sm font-medium">Titre (obligatoire)
           <input name="title" autoFocus required maxLength={100} className={inputClass} />
         </label>
-        <label className="block text-sm font-medium">Description
-          <textarea name="description" required maxLength={2000} rows={5} className={inputClass} />
+        <label className="block text-sm font-medium">Description (facultatif)
+          <textarea name="description" maxLength={2000} rows={5} className={inputClass} />
+        </label>
+        <label className="block text-sm font-medium">URL (facultatif)
+          <input name="url" type="url" maxLength={2048} placeholder="https://…" className={inputClass} />
         </label>
         <p role="alert" className="text-sm text-red-700">{state.error}</p>
         <div className="flex flex-wrap justify-end gap-3">
