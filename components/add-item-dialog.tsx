@@ -1,17 +1,12 @@
 "use client";
 
-import { useActionState, useEffect, useId, useRef, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import clsx from "clsx";
+import { Modal } from "@/components/modal";
 import { addItem, editItem } from "@/app/actions/items";
 
 export function ItemDialog({ onClose, item }: { onClose: () => void; item?: { id: string; title: string; description: string | null; url: string | null } }) {
-  const headingId = useId();
-  const dialog = useRef<HTMLDialogElement>(null);
   const [state, action, pending] = useActionState(item ? editItem : addItem, { error: "", success: false });
-
-  useEffect(() => {
-    dialog.current?.showModal();
-  }, []);
 
   useEffect(() => {
     if (state.success) onClose();
@@ -19,8 +14,7 @@ export function ItemDialog({ onClose, item }: { onClose: () => void; item?: { id
 
   const inputClass = "mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-950 focus:outline-2 focus:outline-emerald-700";
   return (
-    <dialog ref={dialog} aria-labelledby={headingId} onClose={onClose} onCancel={(event) => { if (pending) event.preventDefault(); }} className="m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-2xl bg-white p-6 text-zinc-900 shadow-xl backdrop:bg-black/40 sm:p-8">
-      <h2 id={headingId} className="text-2xl font-semibold">{item ? "Modifier un item" : "Ajouter un item"}</h2>
+    <Modal title={item ? "Modifier un item" : "Ajouter un item"} pending={pending} onClose={onClose}>
       <form action={action} aria-busy={pending} className="mt-6 space-y-5">
         {item && <input type="hidden" name="id" value={item.id} />}
         {!item && (
@@ -42,7 +36,7 @@ export function ItemDialog({ onClose, item }: { onClose: () => void; item?: { id
           </button>
         </div>
       </form>
-    </dialog>
+    </Modal>
   );
 }
 
