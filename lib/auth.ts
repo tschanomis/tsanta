@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import { cache } from "react";
 import Credentials from "next-auth/providers/credentials";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { database } from "@/lib/db";
 import { credentials } from "@/lib/credentials";
 import { verifyPassword } from "@/lib/password";
@@ -45,6 +46,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 });
 
 export const currentUser = cache(async (): Promise<{ id: string; email: string } | null> => {
+  // NextAuth doit s’exécuter à la requête, après la phase de prérendu.
+  await connection();
   const session = await auth();
   if (!session?.user?.id) return null;
   // Vérifier que le compte existe toujours, notamment après suppression de son invitation.
