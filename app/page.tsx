@@ -24,7 +24,7 @@ async function RegisteredUsers() {
           <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-lg font-semibold text-emerald-800">
             {Array.from(user.name)[0].toLocaleUpperCase("fr")}
           </span>
-          <p className="min-w-0 break-words font-medium">{user.name}</p>
+          <p className="min-w-0 wrap-break-word font-medium">{user.name}</p>
           </Link>
         </li>
       ))}
@@ -39,7 +39,7 @@ async function HomeContent() {
       <section className="w-full max-w-4xl rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
         <p className="text-sm font-semibold tracking-widest text-emerald-700">SANTA</p>
         <h1 className="mt-3 text-3xl font-semibold">Bienvenue dans votre espace</h1>
-        <p className="mt-4 break-words text-zinc-600">Connecté avec {user.email}</p>
+        <p className="mt-4 wrap-break-word text-zinc-600">Connecté avec {user.email}</p>
         <section aria-labelledby="registered-users-title" className="mt-8 border-t border-zinc-200 pt-8">
           <h2 id="registered-users-title" className="text-xl font-semibold">Les inscrits</h2>
           <Suspense fallback={<p role="status" className="mt-5 text-zinc-600">Chargement des inscrits…</p>}>
