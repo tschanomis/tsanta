@@ -16,7 +16,7 @@ export function Modal({ title, children, pending = false, onClose }: {
   }, []);
 
   return (
-    <dialog ref={dialog} aria-labelledby={headingId} onClose={onClose} onCancel={(event) => { if (pending) event.preventDefault(); }} className="m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-2xl bg-white p-6 text-zinc-900 shadow-xl backdrop:bg-black/40 sm:p-8">
+    <dialog ref={dialog} aria-labelledby={headingId} onClose={onClose} onCancel={(event) => { if (pending) event.preventDefault(); }} className="m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-lg overflow-y-auto rounded-2xl bg-zinc-900 p-6 text-zinc-100 shadow-xl backdrop:bg-black/70 sm:p-8">
       <h2 id={headingId} className="text-2xl font-semibold">{title}</h2>
       {children}
     </dialog>

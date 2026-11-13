@@ -12,7 +12,7 @@ export function ItemDialog({ onClose, item }: { onClose: () => void; item?: { id
     if (state.success) onClose();
   }, [state.success, onClose]);
 
-  const inputClass = "mt-2 w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-950 focus:outline-2 focus:outline-emerald-700";
+  const inputClass = "mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-100 focus:outline-2 focus:outline-emerald-700";
   return (
     <Modal title={item ? "Modifier un item" : "Ajouter un item"} pending={pending} onClose={onClose}>
       <form action={action} aria-busy={pending} className="mt-6 space-y-5">
@@ -28,9 +28,9 @@ export function ItemDialog({ onClose, item }: { onClose: () => void; item?: { id
         <label className="block text-sm font-medium">URL (facultatif)
           <input name="url" defaultValue={item?.url ?? ""} type="url" maxLength={2048} placeholder="https://…" className={inputClass} />
         </label>
-        <p role="alert" className="text-sm text-red-700">{state.error}</p>
+        <p role="alert" className="text-sm text-red-400">{state.error}</p>
         <div className="flex flex-wrap justify-end gap-3">
-          <button type="button" disabled={pending} onClick={onClose} className="rounded-xl border border-zinc-300 px-5 py-3 font-medium hover:bg-zinc-50 disabled:opacity-60">Annuler</button>
+          <button type="button" disabled={pending} onClick={onClose} className="rounded-xl border border-zinc-700 px-5 py-3 font-medium hover:bg-zinc-800 disabled:opacity-60">Annuler</button>
           <button disabled={pending} className={clsx("rounded-xl bg-emerald-800 px-5 py-3 font-medium text-white hover:bg-emerald-900", pending && "cursor-wait opacity-60")}>
             {pending ? "Enregistrement…" : item ? "Enregistrer" : "Ajouter"}
           </button>

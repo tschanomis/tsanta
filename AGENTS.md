@@ -50,8 +50,7 @@ Before coding:
 After coding:
 1. Run `npm run lint`.
 2. Run `npx tsc --noEmit`.
-3. Run `npm run build` when relevant.
-4. Summarize changes and remaining issues.
+3. Summarize changes and remaining issues.
 
 ## Restrictions
 - Do not modify unrelated files.
