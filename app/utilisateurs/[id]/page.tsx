@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/auth";
 import { getUserProfile } from "@/lib/data/users";
 import { getUserItems } from "@/lib/data/items";
 import { AddItemDialog } from "@/components/add-item-dialog";
+import { ItemControls } from "@/components/item-controls";
 
 type UserPageProps = { params: Promise<{ id: string }> };
 
@@ -36,6 +37,7 @@ async function UserList({ params }: UserPageProps) {
                     {item.url} <span className="sr-only">(nouvel onglet)</span>
                   </a>
                 )}
+                {viewer.id === owner.id && <ItemControls item={item} />}
               </li>
             ))}
           </ul>
