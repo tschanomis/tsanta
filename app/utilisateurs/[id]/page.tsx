@@ -17,10 +17,9 @@ async function UserList({ params }: UserPageProps) {
   const items = await getUserItems(owner.id);
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-5 py-12 text-zinc-100">
-      <section className="w-full max-w-4xl rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-sm sm:p-8">
-        <p className="text-sm font-semibold tracking-widest text-emerald-400">SANTA</p>
-        <h1 className="mt-3 wrap-break-word text-3xl font-semibold">
+    <main className="flex flex-1 justify-center px-5 py-8 text-zinc-100 sm:py-12">
+      <section className="w-full max-w-4xl">
+        <h1 className="wrap-break-word text-3xl font-semibold">
           {viewer.id === owner.id ? "Ta liste" : `Liste ${owner.name}`}
         </h1>
         {viewer.id === owner.id && <AddItemDialog />}
@@ -29,7 +28,7 @@ async function UserList({ params }: UserPageProps) {
         ) : (
           <ul className="mt-6 space-y-4">
             {items.map((item) => (
-              <li key={item.id} className="rounded-xl border border-zinc-800 bg-zinc-950 p-5">
+              <li key={item.id} className="py-5">
                 <h2 className="wrap-break-word text-lg font-semibold">{item.title}</h2>
                 {item.description && <p className="mt-2 whitespace-pre-wrap wrap-break-word text-zinc-400">{item.description}</p>}
                 {item.url.map((url) => (

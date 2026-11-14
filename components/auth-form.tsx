@@ -9,10 +9,9 @@ export function AuthForm({ registration = false }: { registration?: boolean }) {
   const [state, action, pending] = useActionState(registration ? register : login, { error: "" });
   const inputClass = "mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-100 focus:outline-2 focus:outline-emerald-700";
   return (
-    <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-5 py-12 text-zinc-100">
-      <section className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-sm sm:p-8">
-        <p className="text-sm font-semibold tracking-widest text-emerald-400">SANTA</p>
-        <h1 className="mt-3 text-3xl font-semibold">{registration ? "Créer mon compte" : "Se connecter"}</h1>
+    <main className="flex flex-1 justify-center px-5 py-8 text-zinc-100 sm:py-12">
+      <section className="w-full max-w-md">
+        <h1 className="text-3xl font-semibold">{registration ? "Créer mon compte" : "Se connecter"}</h1>
         <p className="mt-3 text-sm leading-6 text-zinc-400">{registration ? "Votre adresse email doit être autorisée pour créer votre compte." : "Première visite ? Inscrivez-vous pour créer votre mot de passe."}</p>
         <form action={action} className="mt-7 space-y-5" aria-busy={pending}>
           {registration && (
