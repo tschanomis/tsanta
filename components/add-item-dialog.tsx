@@ -36,10 +36,14 @@ export function ItemDialog({ onClose, item }: { onClose: () => void; item?: List
                 Lien {index + 1}
                 <input name="url" value={url} onChange={(event) => setUrls(urls.map((value, position) => position === index ? event.target.value : value))} type="url" maxLength={2048} placeholder="https://…" className={inputClass} />
               </label>
-              <button type="button" aria-label={`Supprimer le lien ${index + 1}`} onClick={() => setUrls(urls.filter((_, position) => position !== index))} className="rounded-xl border border-zinc-700 px-3 py-3 text-sm hover:bg-zinc-800">Supprimer</button>
+              <button type="button" aria-label={`Supprimer le lien ${index + 1}`} onClick={() => setUrls(urls.filter((_, position) => position !== index))} title="Supprimer le lien" className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg text-red-400 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="size-5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7" />
+                </svg>
+              </button>
             </div>
           ))}
-          <button type="button" aria-label="Ajouter un lien" title="Ajouter un lien" onClick={() => setUrls([...urls, ""])} className="inline-flex size-11 items-center justify-center rounded-xl border border-zinc-700 text-emerald-400 hover:bg-zinc-800">
+          <button type="button" aria-label="Ajouter un lien" title="Ajouter un lien" onClick={() => setUrls([...urls, ""])} className="inline-flex size-11 items-center justify-center rounded-lg text-emerald-400 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="size-5">
               <path strokeLinecap="round" d="M12 5v14M5 12h14" />
             </svg>
