@@ -24,27 +24,29 @@ export async function addItem(_: ItemState, form: FormData): Promise<ItemState> 
   return { error: "", success: true };
 }
 
-function optionalFields(form: FormData): ItemState | { description: string | null; url: string | null } {
+function optionalFields(form: FormData): ItemState | { description: string | null; url: string[] } {
   const description = form.get("description") ?? "";
-  const url = form.get("url") ?? "";
+  const urls = form.getAll("url");
   if (typeof description !== "string" || description.trim().length > 2000) {
     return { error: "La description doit contenir au maximum 2 000 caractères.", success: false };
   }
-  if (typeof url !== "string" || url.trim().length > 2048) {
-    return { error: "L’URL doit contenir au maximum 2 048 caractères.", success: false };
-  }
-  let itemUrl = url.trim();
-  if (itemUrl) {
+  const itemUrls: string[] = [];
+  for (const url of urls) {
+    if (typeof url !== "string" || url.trim().length > 2048) {
+      return { error: "Chaque lien doit contenir au maximum 2 048 caractères.", success: false };
+    }
+    if (!url.trim()) continue;
     try {
-      const parsed = new URL(itemUrl);
-      if (!["http:", "https:"].includes(parsed.protocol)) throw new Error("Invalid protocol");
-      itemUrl = parsed.href;
-      if (itemUrl.length > 2048) throw new Error("URL too long");
+      const parsed = new URL(url.trim());
+      if (!["http:", "https:"].includes(parsed.protocol) || parsed.href.length > 2048) {
+        throw new Error("Invalid URL");
+      }
+      if (!itemUrls.includes(parsed.href)) itemUrls.push(parsed.href);
     } catch {
-      return { error: "Saisis une URL valide commençant par http:// ou https://.", success: false };
+      return { error: "Saisis des liens valides commençant par http:// ou https://.", success: false };
     }
   }
-  return { description: description.trim() || null, url: itemUrl || null };
+  return { description: description.trim() || null, url: itemUrls };
 }
 
 function itemId(form: FormData) {

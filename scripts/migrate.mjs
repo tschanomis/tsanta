@@ -11,6 +11,8 @@ try {
   console.log('Table des items créée.');
   await client.query(await readFile(new URL('../db/003-item-optional-fields.sql', import.meta.url), 'utf8'));
   console.log('Champs facultatifs des items mis à jour.');
+  await client.query(await readFile(new URL('../db/004-item-multiple-urls.sql', import.meta.url), 'utf8'));
+  console.log('URL multiples des items activées.');
 } finally {
   await client.end();
 }

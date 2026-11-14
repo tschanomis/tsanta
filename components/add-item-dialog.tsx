@@ -3,10 +3,13 @@
 import { useActionState, useEffect, useState } from "react";
 import clsx from "clsx";
 import { Modal } from "@/components/modal";
+import type { ListItem } from "@/lib/data/items";
 import { addItem, editItem } from "@/app/actions/items";
 
-export function ItemDialog({ onClose, item }: { onClose: () => void; item?: { id: string; title: string; description: string | null; url: string | null } }) {
+export function ItemDialog({ onClose, item }: { onClose: () => void; item?: ListItem }) {
   const [state, action, pending] = useActionState(item ? editItem : addItem, { error: "", success: false });
+
+  const [urls, setUrls] = useState<string[]>(item?.url.length ? item.url : [""]);
 
   useEffect(() => {
     if (state.success) onClose();
@@ -18,16 +21,30 @@ export function ItemDialog({ onClose, item }: { onClose: () => void; item?: { id
       <form action={action} aria-busy={pending} className="mt-6 space-y-5">
         {item && <input type="hidden" name="id" value={item.id} />}
         {!item && (
-          <label className="block text-sm font-medium">Titre (obligatoire)
+          <label className="block text-sm font-medium">Titre <strong className="text-emerald-400">*</strong>
             <input name="title" autoFocus required maxLength={100} className={inputClass} />
           </label>
         )}
-        <label className="block text-sm font-medium">Description (facultatif)
+        <label className="block text-sm font-medium">Description
           <textarea name="description" defaultValue={item?.description ?? ""} autoFocus={!!item} maxLength={2000} rows={5} className={inputClass} />
         </label>
-        <label className="block text-sm font-medium">URL (facultatif)
-          <input name="url" defaultValue={item?.url ?? ""} type="url" maxLength={2048} placeholder="https://…" className={inputClass} />
-        </label>
+        <fieldset className="space-y-3" disabled={pending}>
+          <legend className="text-sm font-medium">Liens</legend>
+          {urls.map((url, index) => (
+            <div key={index} className="flex items-end gap-2">
+              <label className="min-w-0 flex-1 text-sm font-medium">
+                Lien {index + 1}
+                <input name="url" value={url} onChange={(event) => setUrls(urls.map((value, position) => position === index ? event.target.value : value))} type="url" maxLength={2048} placeholder="https://…" className={inputClass} />
+              </label>
+              <button type="button" aria-label={`Supprimer le lien ${index + 1}`} onClick={() => setUrls(urls.filter((_, position) => position !== index))} className="rounded-xl border border-zinc-700 px-3 py-3 text-sm hover:bg-zinc-800">Supprimer</button>
+            </div>
+          ))}
+          <button type="button" aria-label="Ajouter un lien" title="Ajouter un lien" onClick={() => setUrls([...urls, ""])} className="inline-flex size-11 items-center justify-center rounded-xl border border-zinc-700 text-emerald-400 hover:bg-zinc-800">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="size-5">
+              <path strokeLinecap="round" d="M12 5v14M5 12h14" />
+            </svg>
+          </button>
+        </fieldset>
         <p role="alert" className="text-sm text-red-400">{state.error}</p>
         <div className="flex flex-wrap justify-end gap-3">
           <button type="button" disabled={pending} onClick={onClose} className="rounded-xl border border-zinc-700 px-5 py-3 font-medium hover:bg-zinc-800 disabled:opacity-60">Annuler</button>
