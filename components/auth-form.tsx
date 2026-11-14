@@ -7,7 +7,7 @@ import { login, register } from "@/app/auth-actions";
 
 export function AuthForm({ registration = false }: { registration?: boolean }) {
   const [state, action, pending] = useActionState(registration ? register : login, { error: "" });
-  const inputClass = "mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-100 focus:outline-2 focus:outline-emerald-700";
+  const inputClass = "mt-2 w-full rounded-md border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-100 focus:outline-2 focus:outline-emerald-700";
   return (
     <main className="flex flex-1 justify-center px-5 py-8 text-zinc-100 sm:py-12">
       <section className="w-full max-w-md">
@@ -32,7 +32,7 @@ export function AuthForm({ registration = false }: { registration?: boolean }) {
             </label>
           </>}
           <p role="alert" className="text-sm text-red-400">{state.error}</p>
-          <button disabled={pending} className={clsx("w-full rounded-xl bg-emerald-800 px-4 py-3 font-medium text-white hover:bg-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800", pending && "cursor-wait opacity-60")}>
+          <button disabled={pending} className={clsx("w-full rounded-md bg-emerald-800 shadow-[0_0_20px_#00ffc318] px-4 py-3 font-medium text-white hover:bg-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-800", pending && "cursor-wait opacity-60")}>
             {pending ? "Veuillez patienter…" : registration ? "Créer mon compte" : "Se connecter"}
           </button>
         </form>

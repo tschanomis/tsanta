@@ -18,7 +18,7 @@ export async function addItem(_: ItemState, form: FormData): Promise<ItemState> 
   try {
     userId = await createOwnItem(title.trim(), fields.description, fields.url);
   } catch {
-    return { error: "Impossible d’ajouter cet item. Réessaie plus tard.", success: false };
+    return { error: "Impossible d’ajouter ces cadeaux. Réessaie plus tard.", success: false };
   }
   revalidatePath(`/utilisateurs/${userId}`);
   return { error: "", success: true };
@@ -57,29 +57,29 @@ function itemId(form: FormData) {
 export async function editItem(_: ItemState, form: FormData): Promise<ItemState> {
   await requireUser();
   const id = itemId(form);
-  if (!id) return { error: "Item invalide.", success: false };
+  if (!id) return { error: "Cadeaux invalides.", success: false };
   const fields = optionalFields(form);
   if ("error" in fields) return fields;
   try {
     const userId = await updateOwnItem(id, fields.description, fields.url);
-    if (!userId) return { error: "Item introuvable ou non autorisé.", success: false };
+    if (!userId) return { error: "Cadeaux introuvables ou non autorisés.", success: false };
     revalidatePath(`/utilisateurs/${userId}`);
     return { error: "", success: true };
   } catch {
-    return { error: "Impossible de modifier cet item. Réessaie plus tard.", success: false };
+    return { error: "Impossible de modifier ces cadeaux. Réessaie plus tard.", success: false };
   }
 }
 
 export async function removeItem(_: ItemState, form: FormData): Promise<ItemState> {
   await requireUser();
   const id = itemId(form);
-  if (!id) return { error: "Item invalide.", success: false };
+  if (!id) return { error: "Cadeaux invalides.", success: false };
   try {
     const userId = await deleteOwnItem(id);
-    if (!userId) return { error: "Item introuvable ou non autorisé.", success: false };
+    if (!userId) return { error: "Cadeaux introuvables ou non autorisés.", success: false };
     revalidatePath(`/utilisateurs/${userId}`);
     return { error: "", success: true };
   } catch {
-    return { error: "Impossible de supprimer cet item. Réessaie plus tard.", success: false };
+    return { error: "Impossible de supprimer ces cadeaux. Réessaie plus tard.", success: false };
   }
 }

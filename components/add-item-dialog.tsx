@@ -15,9 +15,9 @@ export function ItemDialog({ onClose, item }: { onClose: () => void; item?: List
     if (state.success) onClose();
   }, [state.success, onClose]);
 
-  const inputClass = "mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-100 focus:outline-2 focus:outline-emerald-700";
+  const inputClass = "mt-2 w-full rounded-md border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-100 focus:outline-2 focus:outline-emerald-700";
   return (
-    <Modal title={item ? "Modifier un item" : "Ajouter un item"} pending={pending} onClose={onClose}>
+    <Modal title={item ? "Modifier des cadeaux" : "Ajouter des cadeaux"} pending={pending} onClose={onClose}>
       <form action={action} aria-busy={pending} className="mt-6 space-y-5">
         {item && <input type="hidden" name="id" value={item.id} />}
         {!item && (
@@ -36,14 +36,14 @@ export function ItemDialog({ onClose, item }: { onClose: () => void; item?: List
                 Lien {index + 1}
                 <input name="url" value={url} onChange={(event) => setUrls(urls.map((value, position) => position === index ? event.target.value : value))} type="url" maxLength={2048} placeholder="https://…" className={inputClass} />
               </label>
-              <button type="button" aria-label={`Supprimer le lien ${index + 1}`} onClick={() => setUrls(urls.filter((_, position) => position !== index))} title="Supprimer le lien" className="inline-flex size-11 shrink-0 items-center justify-center rounded-lg text-red-400 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400">
+              <button type="button" aria-label={`Supprimer le lien ${index + 1}`} onClick={() => setUrls(urls.filter((_, position) => position !== index))} title="Supprimer le lien" className="inline-flex size-11 shrink-0 items-center justify-center rounded-md text-red-400 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400">
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="size-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7" />
                 </svg>
               </button>
             </div>
           ))}
-          <button type="button" aria-label="Ajouter un lien" title="Ajouter un lien" onClick={() => setUrls([...urls, ""])} className="inline-flex size-11 items-center justify-center rounded-lg text-emerald-400 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400">
+          <button type="button" aria-label="Ajouter un lien" title="Ajouter un lien" onClick={() => setUrls([...urls, ""])} className="inline-flex size-11 items-center justify-center rounded-md text-emerald-400 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="size-5">
               <path strokeLinecap="round" d="M12 5v14M5 12h14" />
             </svg>
@@ -51,8 +51,8 @@ export function ItemDialog({ onClose, item }: { onClose: () => void; item?: List
         </fieldset>
         <p role="alert" className="text-sm text-red-400">{state.error}</p>
         <div className="flex flex-wrap justify-end gap-3">
-          <button type="button" disabled={pending} onClick={onClose} className="rounded-xl border border-zinc-700 px-5 py-3 font-medium hover:bg-zinc-800 disabled:opacity-60">Annuler</button>
-          <button disabled={pending} className={clsx("rounded-xl bg-emerald-800 px-5 py-3 font-medium text-white hover:bg-emerald-900", pending && "cursor-wait opacity-60")}>
+          <button type="button" disabled={pending} onClick={onClose} className="rounded-md border border-zinc-700 px-5 py-3 font-medium hover:bg-zinc-800 disabled:opacity-60">Annuler</button>
+          <button disabled={pending} className={clsx("rounded-md bg-emerald-800 shadow-[0_0_20px_#00ffc318] px-5 py-3 font-medium text-white hover:bg-emerald-900", pending && "cursor-wait opacity-60")}>
             {pending ? "Enregistrement…" : item ? "Enregistrer" : "Ajouter"}
           </button>
         </div>
@@ -65,7 +65,7 @@ export function AddItemDialog() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} aria-label="Ajouter un item" title="Ajouter un item" className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-emerald-800 text-white hover:bg-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400">
+      <button type="button" onClick={() => setOpen(true)} aria-label="Ajouter des cadeaux" title="Ajouter des cadeaux" className="inline-flex size-11 shrink-0 items-center justify-center rounded-md bg-emerald-800 shadow-[0_0_20px_#00ffc318] text-white hover:bg-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400">
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="size-5">
           <path strokeLinecap="round" d="M12 5v14M5 12h14" />
         </svg>

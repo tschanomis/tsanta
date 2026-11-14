@@ -18,6 +18,7 @@ async function UserList({ params }: UserPageProps) {
   return (
     <main className="flex flex-1 justify-center px-5 py-8 text-zinc-100 sm:py-12">
       <section className="w-full max-w-4xl">
+        <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-pink-400">Liste de cadeaux</p>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h1 className="min-w-0 wrap-break-word text-3xl font-semibold">
             {viewer.id === owner.id ? "Ta liste" : `Liste ${owner.name}`}
@@ -25,7 +26,7 @@ async function UserList({ params }: UserPageProps) {
           {viewer.id === owner.id && <AddItemDialog />}
         </div>
         {items.length === 0 ? (
-          <p className="mt-6 text-zinc-400">Aucun item dans cette liste pour le moment.</p>
+          <p className="mt-6 text-zinc-400">Aucdes cadeaux dans cette liste pour le moment.</p>
         ) : (
           <ul className="mt-6 space-y-4">
             {items.map((item) => (

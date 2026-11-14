@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
-import { getRegisteredUsers, type UserProfile } from "@/lib/data/users";
+import { getRegisteredUsers, getUserProfile, type UserProfile } from "@/lib/data/users";
 
 async function RegisteredUsers() {
   let users: UserProfile[];
@@ -33,11 +33,12 @@ async function RegisteredUsers() {
 
 async function HomeContent() {
   const user = await requireUser();
+  const profile = await getUserProfile(user.id);
   return (
     <main className="flex flex-1 justify-center px-5 py-8 text-zinc-100 sm:py-12">
       <section className="w-full max-w-4xl">
-        <h1 className="text-3xl font-semibold">Bienvenue dans votre espace</h1>
-        <p className="mt-4 wrap-break-word text-zinc-400">Connecté avec {user.email}</p>
+        <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-pink-400">Liste de cadeaux</p>
+        <h1 className="text-3xl font-semibold sm:text-4xl">Bienvenue{profile ? ` ${profile.name}` : ""}</h1>
         <section aria-labelledby="registered-users-title" className="mt-8">
           <h2 id="registered-users-title" className="text-xl font-semibold">Les inscrits</h2>
           <Suspense fallback={<p role="status" className="mt-5 text-zinc-400">Chargement des inscrits…</p>}>
