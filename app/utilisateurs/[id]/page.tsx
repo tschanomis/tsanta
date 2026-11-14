@@ -29,14 +29,16 @@ async function UserList({ params }: UserPageProps) {
           <ul className="mt-6 space-y-4">
             {items.map((item) => (
               <li key={item.id} className="py-5">
-                <h2 className="wrap-break-word text-lg font-semibold">{item.title}</h2>
+                <div className="flex items-center justify-between gap-3">
+                  <h2 className="min-w-0 wrap-break-word text-lg font-semibold">{item.title}</h2>
+                  {viewer.id === owner.id && <ItemControls item={item} />}
+                </div>
                 {item.description && <p className="mt-2 whitespace-pre-wrap wrap-break-word text-zinc-400">{item.description}</p>}
                 {item.url.map((url) => (
                   <a key={url} href={url} title={url} target="_blank" rel="noopener noreferrer" className="mt-3 block truncate font-medium text-emerald-400 underline underline-offset-4">
                     {url} <span className="sr-only">(nouvel onglet)</span>
                   </a>
                 ))}
-                {viewer.id === owner.id && <ItemControls item={item} />}
               </li>
             ))}
           </ul>

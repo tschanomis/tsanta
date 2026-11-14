@@ -31,11 +31,17 @@ function DeleteItemDialog({ item, onClose }: { item: ListItem; onClose: () => vo
 export function ItemControls({ item }: { item: ListItem }) {
   const [popup, setPopup] = useState<"edit" | "delete" | null>(null);
   return (
-    <div className="mt-4">
-      <div className="flex flex-wrap gap-4">
-        <button onClick={() => setPopup("edit")} className="rounded font-medium text-emerald-400 underline underline-offset-4">Modifier<span className="sr-only"> {item.title}</span></button>
-        <button onClick={() => setPopup("delete")} className="rounded font-medium text-red-400 underline underline-offset-4">Supprimer<span className="sr-only"> {item.title}</span></button>
-      </div>
+    <div className="flex shrink-0 items-center gap-1">
+      <button type="button" onClick={() => setPopup("edit")} aria-label={`Modifier ${item.title}`} title="Modifier" className="inline-flex size-11 items-center justify-center rounded-lg text-emerald-400 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="size-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="m16 3 5 5M4 15 16 3a2.12 2.12 0 0 1 5 5L9 20l-6 1 1-6Z" />
+        </svg>
+      </button>
+      <button type="button" onClick={() => setPopup("delete")} aria-label={`Supprimer ${item.title}`} title="Supprimer" className="inline-flex size-11 items-center justify-center rounded-lg text-red-400 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} className="size-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7" />
+        </svg>
+      </button>
       {popup === "edit" && <ItemDialog item={item} onClose={() => setPopup(null)} />}
       {popup === "delete" && <DeleteItemDialog item={item} onClose={() => setPopup(null)} />}
     </div>
