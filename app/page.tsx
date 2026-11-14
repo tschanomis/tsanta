@@ -16,14 +16,14 @@ async function RegisteredUsers() {
   }
 
   return (
-    <ul className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {users.map((user) => (
         <li key={user.id}>
-          <Link href={`/utilisateurs/${user.id}`} className="flex h-full items-center gap-4 rounded-xl p-5 hover:bg-emerald-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-800">
-          <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-emerald-950 text-lg font-semibold text-emerald-400">
+          <Link href={`/utilisateurs/${user.id}`} className="group flex h-full min-h-64 flex-col items-center justify-center gap-6 rounded-xl bg-zinc-900/80 px-6 py-10 text-center transition-colors hover:bg-emerald-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-800">
+          <span aria-hidden="true" className="flex size-24 shrink-0 items-center justify-center rounded-full bg-emerald-950 font-mono text-4xl font-semibold text-emerald-400 shadow-[0_0_30px_#00ffc312] group-hover:shadow-[0_0_40px_#00ffc32b]">
             {Array.from(user.name)[0].toLocaleUpperCase("fr")}
           </span>
-          <p className="min-w-0 wrap-break-word font-medium">{user.name}</p>
+          <p className="w-full min-w-0 wrap-break-word text-xl font-semibold">{user.name}</p>
           </Link>
         </li>
       ))}
@@ -39,8 +39,7 @@ async function HomeContent() {
       <section className="w-full max-w-4xl">
         <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-pink-400">Liste de cadeaux</p>
         <h1 className="text-3xl font-semibold sm:text-4xl">Bienvenue{profile ? ` ${profile.name}` : ""}</h1>
-        <section aria-labelledby="registered-users-title" className="mt-8">
-          <h2 id="registered-users-title" className="text-xl font-semibold">Les inscrits</h2>
+        <section aria-label="Listes de cadeaux des utilisateurs" className="mt-10">
           <Suspense fallback={<p role="status" className="mt-5 text-zinc-400">Chargement des inscrits…</p>}>
             <RegisteredUsers />
           </Suspense>
