@@ -9,7 +9,7 @@ import { verifyPassword } from "@/lib/password";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: { signIn: "/connexion" },
-  session: { strategy: "jwt", maxAge: 7 * 24 * 60 * 60 },
+  session: { strategy: "jwt", maxAge: 365 * 24 * 60 * 60 },
   providers: [Credentials({
     credentials: { email: { type: "email" }, password: { type: "password" } },
     async authorize(values) {
