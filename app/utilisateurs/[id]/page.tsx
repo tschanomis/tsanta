@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { getUserProfile } from "@/lib/data/users";
@@ -19,10 +18,12 @@ async function UserList({ params }: UserPageProps) {
   return (
     <main className="flex flex-1 justify-center px-5 py-8 text-zinc-100 sm:py-12">
       <section className="w-full max-w-4xl">
-        <h1 className="wrap-break-word text-3xl font-semibold">
-          {viewer.id === owner.id ? "Ta liste" : `Liste ${owner.name}`}
-        </h1>
-        {viewer.id === owner.id && <AddItemDialog />}
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h1 className="min-w-0 wrap-break-word text-3xl font-semibold">
+            {viewer.id === owner.id ? "Ta liste" : `Liste ${owner.name}`}
+          </h1>
+          {viewer.id === owner.id && <AddItemDialog />}
+        </div>
         {items.length === 0 ? (
           <p className="mt-6 text-zinc-400">Aucun item dans cette liste pour le moment.</p>
         ) : (
@@ -43,12 +44,6 @@ async function UserList({ params }: UserPageProps) {
             ))}
           </ul>
         )}
-        <Link
-          href="/"
-          className="mt-8 inline-block rounded font-semibold text-emerald-400 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-800"
-        >
-          Retour aux inscrits
-        </Link>
       </section>
     </main>
   );

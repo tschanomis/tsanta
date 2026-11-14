@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
-import { logout } from "@/app/auth-actions";
 import { getRegisteredUsers, type UserProfile } from "@/lib/data/users";
 
 async function RegisteredUsers() {
@@ -45,9 +44,6 @@ async function HomeContent() {
             <RegisteredUsers />
           </Suspense>
         </section>
-        <form action={logout} className="mt-8">
-          <button className="rounded-xl bg-emerald-800 px-5 py-3 font-medium text-white hover:bg-emerald-900">Se déconnecter</button>
-        </form>
       </section>
     </main>
   );

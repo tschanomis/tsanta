@@ -65,7 +65,11 @@ export function AddItemDialog() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button onClick={() => setOpen(true)} className="mt-6 rounded-xl bg-emerald-800 px-5 py-3 font-medium text-white hover:bg-emerald-900">Ajouter un item</button>
+      <button type="button" onClick={() => setOpen(true)} aria-label="Ajouter un item" title="Ajouter un item" className="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-emerald-800 text-white hover:bg-emerald-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="size-5">
+          <path strokeLinecap="round" d="M12 5v14M5 12h14" />
+        </svg>
+      </button>
       {open && <ItemDialog onClose={() => setOpen(false)} />}
     </>
   );
