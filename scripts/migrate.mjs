@@ -13,6 +13,8 @@ try {
   console.log('Champs facultatifs des items mis à jour.');
   await client.query(await readFile(new URL('../db/004-item-multiple-urls.sql', import.meta.url), 'utf8'));
   console.log('URL multiples des items activées.');
+  await client.query(await readFile(new URL('../db/005-item-reservations.sql', import.meta.url), 'utf8'));
+  console.log('Réservations des cadeaux activées.');
 } finally {
   await client.end();
 }

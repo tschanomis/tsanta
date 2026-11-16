@@ -17,7 +17,7 @@ export function ItemDialog({ onClose, item, titleOnly = false }: { onClose: () =
 
   const inputClass = "mt-2 w-full rounded-md border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-100 focus:outline-2 focus:outline-emerald-700";
   return (
-    <Modal title={titleOnly ? item ? "Modifier la section" : "Ajouter une section" : item ? "Modifier des cadeaux" : "Ajouter des cadeaux"} pending={pending} onClose={onClose}>
+    <Modal title={titleOnly ? item ? "Modifier le chapitre" : "Ajouter un chapitre" : item ? "Modifier des cadeaux" : "Ajouter des cadeaux"} pending={pending} onClose={onClose}>
       <form action={action} aria-busy={pending} className="mt-6 space-y-5">
         {item && <input type="hidden" name="id" value={item.id} />}
         {(!item || titleOnly) && (
@@ -89,8 +89,8 @@ export function AddItemDialog() {
         </svg>
       </button>
       <div ref={menu} id={menuId} popover="auto" className="fixed inset-auto z-10 m-0 mt-2 w-44 rounded-lg border border-zinc-700 bg-zinc-900 p-1 text-zinc-100 shadow-xl [position-area:bottom_span-left] [position-try-fallbacks:flip-inline]">
-        <button type="button" onClick={() => selectItem("gift")} className={optionClass}>Item</button>
-        <button type="button" onClick={() => selectItem("title")} className={optionClass}>Section</button>
+        <button type="button" onClick={() => selectItem("gift")} className={optionClass}>Cadeaux</button>
+        <button type="button" onClick={() => selectItem("title")} className={optionClass}>Chapitre</button>
       </div>
       {open && <ItemDialog titleOnly={open === "title"} onClose={() => setOpen(null)} />}
     </div>

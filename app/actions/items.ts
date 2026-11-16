@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/auth";
-import { createOwnItem, updateOwnItem, deleteOwnItem } from "@/lib/data/items";
+import { createOwnItem, updateOwnItem, deleteOwnItem, setItemReservation } from "@/lib/data/items";
 
 export type ItemState = { error: string; success: boolean };
 
@@ -85,5 +85,25 @@ export async function removeItem(_: ItemState, form: FormData): Promise<ItemStat
     return { error: "", success: true };
   } catch {
     return { error: "Impossible de supprimer ces cadeaux. Réessaie plus tard.", success: false };
+  }
+}
+
+export async function reserveItem(_: ItemState, form: FormData): Promise<ItemState> {
+  await requireUser();
+  const id = itemId(form);
+  const checked = form.get("checked");
+  if (!id || (checked !== "true" && checked !== "false")) {
+    return { error: "Réservation invalide.", success: false };
+  }
+  try {
+    const userId = await setItemReservation(id, checked === "true");
+    if (!userId) {
+      revalidatePath("/utilisateurs/[id]", "page");
+      return { error: "Ce cadeau est déjà réservé ou n’est plus disponible.", success: false };
+    }
+    revalidatePath(`/utilisateurs/${userId}`);
+    return { error: "", success: true };
+  } catch {
+    return { error: "Impossible de modifier la réservation. Réessaie plus tard.", success: false };
   }
 }

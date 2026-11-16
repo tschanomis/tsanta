@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { getUserProfile } from "@/lib/data/users";
 import { getUserItems } from "@/lib/data/items";
 import { AddItemDialog } from "@/components/add-item-dialog";
+import { ItemReservation } from "@/components/item-reservation";
 import { ItemControls } from "@/components/item-controls";
 
 type UserPageProps = { params: Promise<{ id: string }> };
@@ -34,6 +35,7 @@ async function UserList({ params }: UserPageProps) {
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="min-w-0 wrap-break-word text-lg font-semibold">{item.title}</h2>
                   {viewer.id === owner.id && <ItemControls item={item} />}
+                  {viewer.id !== owner.id && (item.description || item.url.length > 0) && <ItemReservation item={item} viewerId={viewer.id} />}
                 </div>
                 {!item.description && item.url.length === 0 && <hr className="mt-3 border-zinc-700" />}
                 {item.description && <p className="mt-2 whitespace-pre-wrap wrap-break-word text-zinc-400">{item.description}</p>}
