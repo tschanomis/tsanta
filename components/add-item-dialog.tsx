@@ -41,11 +41,15 @@ export function ItemDialog({ onClose, item }: { onClose: () => void; item?: List
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7" />
                 </svg>
               </button>
-              <button type="button" aria-label="Ajouter un lien" title="Ajouter un lien" onClick={() => setUrls([...urls, ""])} className="inline-flex size-11 shrink-0 items-center justify-center rounded-md text-emerald-400 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400">
-                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="size-5">
-                  <path strokeLinecap="round" d="M12 5v14M5 12h14" />
-                </svg>
-              </button>
+              {index === urls.length - 1 ? (
+                <button type="button" aria-label="Ajouter un lien" title="Ajouter un lien" onClick={() => setUrls([...urls, ""])} className="inline-flex size-11 shrink-0 items-center justify-center rounded-md text-emerald-400 hover:bg-zinc-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="size-5">
+                    <path strokeLinecap="round" d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              ) : (
+                <span aria-hidden="true" className="size-11 shrink-0" />
+              )}
             </div>
           ))}
         </fieldset>
