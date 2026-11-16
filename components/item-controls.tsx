@@ -42,7 +42,7 @@ export function ItemControls({ item }: { item: ListItem }) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7" />
         </svg>
       </button>
-      {popup === "edit" && <ItemDialog item={item} onClose={() => setPopup(null)} />}
+      {popup === "edit" && <ItemDialog item={item} titleOnly={!item.description && item.url.length === 0} onClose={() => setPopup(null)} />}
       {popup === "delete" && <DeleteItemDialog item={item} onClose={() => setPopup(null)} />}
     </div>
   );

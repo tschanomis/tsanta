@@ -35,6 +35,7 @@ async function UserList({ params }: UserPageProps) {
                   <h2 className="min-w-0 wrap-break-word text-lg font-semibold">{item.title}</h2>
                   {viewer.id === owner.id && <ItemControls item={item} />}
                 </div>
+                {!item.description && item.url.length === 0 && <hr className="mt-3 border-zinc-700" />}
                 {item.description && <p className="mt-2 whitespace-pre-wrap wrap-break-word text-zinc-400">{item.description}</p>}
                 {item.url.map((url) => (
                   <a key={url} href={url} title={url} target="_blank" rel="noopener noreferrer" className="mt-3 block truncate font-medium text-emerald-400 underline underline-offset-4">

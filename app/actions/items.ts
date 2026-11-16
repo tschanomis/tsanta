@@ -58,10 +58,14 @@ export async function editItem(_: ItemState, form: FormData): Promise<ItemState>
   await requireUser();
   const id = itemId(form);
   if (!id) return { error: "Cadeaux invalides.", success: false };
+  const title = form.get("title");
+  if (title !== null && (typeof title !== "string" || !title.trim() || title.trim().length > 100)) {
+    return { error: "Saisis un titre de 1 à 100 caractères.", success: false };
+  }
   const fields = optionalFields(form);
   if ("error" in fields) return fields;
   try {
-    const userId = await updateOwnItem(id, fields.description, fields.url);
+    const userId = await updateOwnItem(id, fields.description, fields.url, typeof title === "string" ? title.trim() : null);
     if (!userId) return { error: "Cadeaux introuvables ou non autorisés.", success: false };
     revalidatePath(`/utilisateurs/${userId}`);
     return { error: "", success: true };
