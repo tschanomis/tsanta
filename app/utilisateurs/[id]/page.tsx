@@ -20,7 +20,9 @@ async function UserList({ params }: UserPageProps) {
   return (
     <main className="flex flex-1 justify-center px-5 py-8 text-zinc-100 sm:py-12">
       <section className="w-full max-w-4xl">
-        <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-pink-400">Liste de cadeaux</p>
+        <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-pink-400">
+          Liste de cadeaux
+        </p>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h1 className="min-w-0 wrap-break-word text-3xl font-semibold">
             {viewer.id === owner.id ? "Ta liste" : `Liste ${owner.name}`}
@@ -28,21 +30,46 @@ async function UserList({ params }: UserPageProps) {
           {viewer.id === owner.id && <AddItemDialog />}
         </div>
         {items.length === 0 ? (
-          <p className="mt-6 text-zinc-400">Aucdes cadeaux dans cette liste pour le moment.</p>
+          <p className="mt-6 text-zinc-400">Aucun cadeaux dans cette liste pour le moment.</p>
         ) : (
-          <ul className="mt-6 space-y-4">
+          <ul className="mt-4 space-y-2">
             {items.map((item) => (
-              <li key={item.id} className="py-5">
+              <li key={item.id} className="py-2">
                 <div className="flex items-center justify-between gap-3">
-                  <h2 className={clsx("min-w-0 wrap-break-word font-semibold", !item.description && item.url.length === 0 ? "text-xl tracking-tight" : "text-lg")}>{item.title}</h2>
+                  <h2
+                    className={clsx(
+                      "min-w-0 wrap-break-word font-semibold",
+                      !item.description && item.url.length === 0
+                        ? "text-2xl tracking-tight sm:text-3xl"
+                        : "text-lg",
+                    )}
+                  >
+                    {item.title}
+                  </h2>
                   {viewer.id === owner.id && <ItemControls item={item} />}
-                  {viewer.id !== owner.id && (item.description || item.url.length > 0) && <ItemReservation item={item} viewerId={viewer.id} />}
+                  {viewer.id !== owner.id && (item.description || item.url.length > 0) && (
+                    <ItemReservation item={item} viewerId={viewer.id} />
+                  )}
                 </div>
-                {!item.description && item.url.length === 0 && <hr className="mt-3 border-zinc-700" />}
-                {item.description && <p className="mt-2 whitespace-pre-wrap wrap-break-word text-zinc-400">{item.description}</p>}
+                {!item.description && item.url.length === 0 && (
+                  <hr className="mt-2 border-zinc-700" />
+                )}
+                {item.description && (
+                  <p className="mt-1 whitespace-pre-wrap wrap-break-word text-zinc-400">
+                    {item.description}
+                  </p>
+                )}
                 {item.url.map((url) => (
-                  <a key={url} href={url} title={url} target="_blank" rel="noopener noreferrer" className="mt-3 block truncate font-medium text-emerald-400 underline underline-offset-4">
-                    {url} <span className="sr-only">(nouvel onglet)</span>
+                  <a
+                    key={url}
+                    href={url}
+                    title={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 block w-fit max-w-full truncate text-sm text-emerald-400 underline underline-offset-4"
+                  >
+                    {new URL(url).hostname.replace(/^www\./, "")}{" "}
+                    <span className="sr-only">(nouvel onglet)</span>
                   </a>
                 ))}
               </li>
