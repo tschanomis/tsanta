@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/auth";
@@ -33,7 +34,7 @@ async function UserList({ params }: UserPageProps) {
             {items.map((item) => (
               <li key={item.id} className="py-5">
                 <div className="flex items-center justify-between gap-3">
-                  <h2 className="min-w-0 wrap-break-word text-lg font-semibold">{item.title}</h2>
+                  <h2 className={clsx("min-w-0 wrap-break-word font-semibold", !item.description && item.url.length === 0 ? "text-xl tracking-tight" : "text-lg")}>{item.title}</h2>
                   {viewer.id === owner.id && <ItemControls item={item} />}
                   {viewer.id !== owner.id && (item.description || item.url.length > 0) && <ItemReservation item={item} viewerId={viewer.id} />}
                 </div>

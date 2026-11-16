@@ -30,14 +30,6 @@
 
 body {
   background-color: var(--background);
-  background-image:
-    radial-gradient(ellipse at 10% 0%, #00ffc31a, transparent 45%),
-    radial-gradient(ellipse at 95% 35%, #ff277b12, transparent 45%),
-    radial-gradient(circle, #d9fff533 1px, transparent 1.5px),
-    linear-gradient(#64ffc405 1px, transparent 1px),
-    linear-gradient(90deg, #64ffc405 1px, transparent 1px);
-  background-size: auto, auto, 89px 113px, 48px 48px, 48px 48px;
-  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-geist-sans), sans-serif;
 }

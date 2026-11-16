@@ -14,8 +14,8 @@ function DeleteItemDialog({ item, onClose }: { item: ListItem; onClose: () => vo
   }, [state.success, onClose]);
 
   return (
-    <Modal title={!item.description && item.url.length === 0 ? "Supprimer ce chapitre ?" : "Supprimer ces cadeaux ?"} pending={pending} onClose={onClose}>
-      <p className="mt-4 wrap-break-word text-zinc-400">« {item.title} » {!item.description && item.url.length === 0 ? "sera supprimé" : "seront supprimés"} de ta liste. Cette action est définitive.</p>
+    <Modal title={!item.description && item.url.length === 0 ? "Supprimer cette section ?" : "Supprimer ces cadeaux ?"} pending={pending} onClose={onClose}>
+      <p className="mt-4 wrap-break-word text-zinc-400">« {item.title} » {!item.description && item.url.length === 0 ? "sera supprimée" : "seront supprimés"} de ta liste. Cette action est définitive.</p>
       <form action={action} aria-busy={pending} className="mt-6 space-y-5">
         <input type="hidden" name="id" value={item.id} />
         <p role="alert" className="text-sm text-red-400">{state.error}</p>
