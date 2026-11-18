@@ -70,7 +70,10 @@ function ItemLinks({ initialUrls, pending }: { initialUrls?: string[]; pending: 
               aria-label="Ajouter un lien"
               title="Ajouter un lien"
               onClick={() => setUrls((current) => [...current, ""])}
-              className={clsx(linkButtonClass, "text-emerald-400 focus-visible:outline-emerald-400")}
+              className={clsx(
+                linkButtonClass,
+                "text-emerald-400 focus-visible:outline-emerald-400",
+              )}
             >
               <svg
                 aria-hidden="true"
@@ -108,7 +111,6 @@ export function ItemDialog({
 
   const addTitle = titleOnly ? "Ajouter une section" : "Ajouter un cadeau";
   const editTitle = titleOnly ? "Modifier la section" : "Modifier un cadeau";
-  const submitLabel = item ? "Enregistrer" : "Ajouter";
 
   useEffect(() => {
     if (state.success) onClose();
@@ -166,7 +168,7 @@ export function ItemDialog({
               pending && "cursor-wait opacity-60",
             )}
           >
-            {pending ? "Enregistrement…" : submitLabel}
+            {pending ? "Enregistrement…" : item ? "Enregistrer" : "Ajouter"}
           </button>
         </div>
       </form>

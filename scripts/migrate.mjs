@@ -15,6 +15,8 @@ try {
   console.log('URL multiples des items activées.');
   await client.query(await readFile(new URL('../db/005-item-reservations.sql', import.meta.url), 'utf8'));
   console.log('Réservations des cadeaux activées.');
+  await client.query(await readFile(new URL('../db/006-item-positions.sql', import.meta.url), 'utf8'));
+  console.log('Ordre personnalisé des listes activé.');
 } finally {
   await client.end();
 }

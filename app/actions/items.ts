@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/auth";
-import { createOwnItem, updateOwnItem, deleteOwnItem, setItemReservation } from "@/lib/data/items";
+import { createOwnItem, updateOwnItem, deleteOwnItem, setItemReservation, moveOwnItem } from "@/lib/data/items";
 
 export type ItemState = { error: string; success: boolean };
 
@@ -49,9 +49,27 @@ function optionalFields(form: FormData): ItemState | { description: string | nul
   return { description: description.trim() || null, url: itemUrls };
 }
 
+function isItemId(id: unknown): id is string {
+  return typeof id === "string" && /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(id);
+}
+
 function itemId(form: FormData) {
   const id = form.get("id");
-  return typeof id === "string" && /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(id) ? id : null;
+  return isItemId(id) ? id : null;
+}
+
+export async function reorderItems(sourceId: string, targetId: string): Promise<ItemState> {
+  if (!isItemId(sourceId) || !isItemId(targetId) || sourceId === targetId) {
+    return { error: "Déplacement invalide.", success: false };
+  }
+  try {
+    const userId = await moveOwnItem(sourceId, targetId);
+    if (!userId) return { error: "La liste a changé. Réessaie avec les éléments actuels.", success: false };
+    revalidatePath(`/utilisateurs/${userId}`);
+    return { error: "", success: true };
+  } catch {
+    return { error: "Impossible d’enregistrer le déplacement. Réessaie plus tard.", success: false };
+  }
 }
 
 export async function editItem(_: ItemState, form: FormData): Promise<ItemState> {
