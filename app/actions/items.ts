@@ -18,7 +18,7 @@ export async function addItem(_: ItemState, form: FormData): Promise<ItemState> 
   try {
     userId = await createOwnItem(title.trim(), fields.description, fields.url);
   } catch {
-    return { error: "Impossible d’ajouter ces cadeaux. Réessaie plus tard.", success: false };
+    return { error: "Impossible d’ajouter ce cadeau. Réessaie plus tard.", success: false };
   }
   revalidatePath(`/utilisateurs/${userId}`);
   return { error: "", success: true };
