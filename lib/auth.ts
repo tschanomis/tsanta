@@ -45,14 +45,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 });
 
-export const currentUser = cache(async (): Promise<{ id: string; email: string } | null> => {
+export const currentUser = cache(async () => {
   // NextAuth doit s’exécuter à la requête, après la phase de prérendu.
   await connection();
   const session = await auth();
   if (!session?.user?.id) return null;
   // Vérifier que le compte existe toujours, notamment après suppression de son invitation.
-  const result = await database().query<{ id: string; email: string }>(
-    "SELECT id, email FROM users WHERE id = $1", [session.user.id],
+  const result = await database().query<{ id: string; email: string; name: string | null }>(
+    "SELECT id, email, name FROM users WHERE id = $1", [session.user.id],
   );
   return result.rows[0] ?? null;
 });
