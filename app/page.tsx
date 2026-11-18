@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
+import { LoginToast } from "@/components/login-toast";
 import { requireUser } from "@/lib/auth";
 import { getRegisteredUsers, getUserProfile, type UserProfile } from "@/lib/data/users";
 
@@ -31,11 +32,15 @@ async function RegisteredUsers() {
   );
 }
 
-async function HomeContent() {
+type HomeProps = { searchParams: Promise<{ connexion?: string | string[] }> };
+
+async function HomeContent({ searchParams }: HomeProps) {
   const user = await requireUser();
+  const { connexion } = await searchParams;
   const profile = await getUserProfile(user.id);
   return (
     <main className="flex flex-1 justify-center px-5 py-8 text-zinc-100 sm:py-12">
+      {connexion === "reussie" && <LoginToast />}
       <section className="w-full max-w-4xl">
         <p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-pink-400">Liste de cadeaux</p>
         <h1 className="text-3xl font-semibold sm:text-4xl">Bienvenue{profile ? ` ${profile.name}` : ""}</h1>
@@ -49,6 +54,6 @@ async function HomeContent() {
   );
 }
 
-export default function Home() {
-  return <Suspense fallback={<p className="p-8 text-center" role="status">Chargement…</p>}><HomeContent /></Suspense>;
+export default function Home({ searchParams }: HomeProps) {
+  return <Suspense fallback={<p className="p-8 text-center" role="status">Chargement…</p>}><HomeContent searchParams={searchParams} /></Suspense>;
 }

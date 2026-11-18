@@ -46,7 +46,7 @@ export async function login(_: AuthState, form: FormData): Promise<AuthState> {
     }
     throw error;
   }
-  redirect("/");
+  redirect("/?connexion=reussie");
 }
 
 export async function logout() {
