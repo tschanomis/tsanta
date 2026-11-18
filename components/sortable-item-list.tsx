@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState, useTransition, type ReactNode } from "react";
+import { useCallback, useRef, useState, useTransition, type ReactNode } from "react";
 import clsx from "clsx";
 import { reorderItems } from "@/app/actions/items";
+import { Toast, type ToastMessage } from "@/components/toast";
 
 type SortableItem = { id: string; title: string; content: ReactNode };
 
@@ -10,20 +11,23 @@ export function SortableItemList({ items }: { items: SortableItem[] }) {
   const draggedId = useRef<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [targetId, setTargetId] = useState<string | null>(null);
-  const [message, setMessage] = useState("");
+  const [toast, setToast] = useState<ToastMessage | null>(null);
   const [pending, startTransition] = useTransition();
+  const dismissToast = useCallback(() => setToast(null), []);
 
   function move(sourceId: string, destinationId: string) {
     if (pending || sourceId === destinationId) return;
     setSelectedId(null);
     setTargetId(null);
-    setMessage("");
+    dismissToast();
     startTransition(async () => {
       try {
         const result = await reorderItems(sourceId, destinationId);
-        if (!result.success) setMessage(result.error);
+        setToast(result.success
+          ? { type: "success", message: "Ordre enregistré." }
+          : { type: "error", message: result.error });
       } catch {
-        setMessage("Impossible d’enregistrer le déplacement. Réessaie plus tard.");
+        setToast({ type: "error", message: "Impossible d’enregistrer le déplacement. Réessaie plus tard." });
       }
     });
   }
@@ -35,9 +39,10 @@ export function SortableItemList({ items }: { items: SortableItem[] }) {
 
   return (
     <>
-      <p role="status" className={clsx("text-sm text-zinc-300", pending || message ? "mt-2" : "sr-only")}>
-        {pending ? "Enregistrement de l’ordre…" : message}
+      <p role="status" className="sr-only">
+        {pending && "Enregistrement de l’ordre…"}
       </p>
+      <Toast notification={toast} onDismiss={dismissToast} />
       <ul className="mt-4 space-y-2" aria-busy={pending}>
         {items.map((item, index) => (
           <li
