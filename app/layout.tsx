@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { Suspense, useId } from "react";
 import { currentUser } from "@/lib/auth";
 import { logout } from "@/app/auth-actions";
+import { SuggestionsLink } from "@/components/suggestions-link";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -60,6 +61,8 @@ function AccountMenu({ name, email }: { name: string; email: string }) {
             <p className="text-sm text-zinc-400">{email}</p>
           </div>
         </div>
+        <SuggestionsLink />
+        <hr className="mt-1 border-zinc-700" />
         <form action={logout}>
           <button type="submit" className="mt-1 flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium hover:bg-emerald-950 hover:text-emerald-300 focus-visible:outline-2 focus-visible:outline-emerald-400">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="size-4 shrink-0">

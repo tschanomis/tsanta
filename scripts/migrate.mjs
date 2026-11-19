@@ -17,6 +17,8 @@ try {
   console.log('Réservations des cadeaux activées.');
   await client.query(await readFile(new URL('../db/006-item-positions.sql', import.meta.url), 'utf8'));
   console.log('Ordre personnalisé des listes activé.');
+  await client.query(await readFile(new URL('../db/007-suggestions.sql', import.meta.url), 'utf8'));
+  console.log('Table des suggestions créée.');
 } finally {
   await client.end();
 }
