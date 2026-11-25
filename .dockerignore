@@ -1,0 +1,9 @@
+.git
+.github
+.next
+node_modules
+.env*
+.allowed-emails.json
+*.pem
+*.tsbuildinfo
+next-env.d.ts

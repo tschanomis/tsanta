@@ -1,0 +1,60 @@
+name: CI/CD
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Vérifier l’application
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: npm run lint
+      - run: pnpm exec next typegen
+      - run: npx tsc --noEmit
+      - run: npm run build
+
+  deploy:
+    name: Déployer sur OVH
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && vars.PRODUCTION_DEPLOY_ENABLED == 'true'
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: production
+    concurrency: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construire l’image de production
+        run: docker build --tag "santa:$GITHUB_SHA" .
+      - name: Déployer par SSH
+        env:
+          DEPLOY_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.PRODUCTION_SSH_KNOWN_HOSTS }}
+          DEPLOY_HOST: ${{ vars.PRODUCTION_SSH_HOST }}
+        run: |
+          set -euo pipefail
+          [[ -n "$DEPLOY_KEY" && -n "$DEPLOY_KNOWN_HOSTS" && "$DEPLOY_HOST" =~ ^[a-zA-Z0-9][a-zA-Z0-9.-]*$ ]]
+          umask 077
+          ssh_dir=$(mktemp -d)
+          trap 'rm -rf "$ssh_dir"' EXIT
+          printf '%s\n' "$DEPLOY_KEY" > "$ssh_dir/key"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$ssh_dir/known_hosts"
+          docker save "santa:$GITHUB_SHA" | gzip -1 |
+            ssh -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 \
+              -o UserKnownHostsFile="$ssh_dir/known_hosts" -i "$ssh_dir/key" \
+              "root@$DEPLOY_HOST" "release $GITHUB_SHA"

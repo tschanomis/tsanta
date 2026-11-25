@@ -1,0 +1,20 @@
+{
+	auto_https disable_redirects
+}
+
+{$SANTA_HOST} {
+	tls {
+		issuer acme {
+			disable_http_challenge
+		}
+	}
+
+	@santa path /santa /santa/*
+	handle @santa {
+		reverse_proxy 127.0.0.1:13000
+	}
+
+	handle {
+		respond 404
+	}
+}

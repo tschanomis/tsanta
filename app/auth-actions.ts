@@ -50,5 +50,6 @@ export async function login(_: AuthState, form: FormData): Promise<AuthState> {
 }
 
 export async function logout() {
-  await signOut({ redirectTo: "/connexion" });
+  await signOut({ redirect: false });
+  redirect("/connexion");
 }

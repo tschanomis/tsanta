@@ -8,7 +8,7 @@ import { credentials } from "@/lib/credentials";
 import { verifyPassword } from "@/lib/password";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  pages: { signIn: "/connexion" },
+  pages: { signIn: `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/connexion` },
   session: { strategy: "jwt", maxAge: 365 * 24 * 60 * 60 },
   providers: [Credentials({
     credentials: { email: { type: "email" }, password: { type: "password" } },
