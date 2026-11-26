@@ -49,7 +49,7 @@ L’authentification utilise NextAuth v5 (`next-auth`, actuellement en bêta) av
 
 NextAuth gère les sessions JWT chiffrées de sept jours et les cookies HttpOnly, SameSite=Lax et Secure en production (HTTPS requis). Les routes Auth.js sont exposées sous `/api/auth`. La déconnexion efface le cookie NextAuth. Les pages privées vérifient aussi en base que le compte existe toujours.
 
-En production, définir `AUTH_URL` avec l’URL publique HTTPS de la route Auth.js (par exemple `https://santa.example.com/santa/api/auth`).
+En production, définir `AUTH_URL` avec l’URL publique HTTPS de la route Auth.js (par exemple `https://santa.example.com/api/auth`).
 
 Les anciennes sessions `santa_session` ne sont plus acceptées : les utilisateurs doivent se reconnecter après migration. La table historique `sessions` est conservée mais n’est plus utilisée. Supprimer ses lignes ne révoque donc pas les sessions NextAuth. Avec les JWT, la déconnexion ne révoque pas une copie du jeton déjà dérobée : celle-ci reste valable jusqu’à expiration. La suppression du compte empêche immédiatement l’accès aux pages protégées par `requireUser()`.
 
@@ -63,9 +63,9 @@ La liste autorisée est stockée dans Postgres et alimentée par le script d’i
 
 GitHub Actions exécute le lint, la vérification TypeScript et le build pour les pull requests et les changements sur `main`. Après réussite, le job de production construit l’image Docker et la transfère par SSH à l’instance OVH.
 
-Sur l’instance, installer Docker Engine avec Compose et Caddy. Placer `deploy/compose.yaml` et `deploy/release.sh` dans `/opt/santa`, sous le compte root, avec le script exécutable. Créer `/opt/santa/.env` avec les permissions `0600` et les variables `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, `DATABASE_URL`, `AUTH_SECRET` et `AUTH_URL`. Utiliser `postgres` comme hôte dans `DATABASE_URL` et `https://<domaine>/santa/api/auth` pour `AUTH_URL`.
+Sur l’instance, installer Docker Engine avec Compose et Caddy. Placer `deploy/compose.yaml` et `deploy/release.sh` dans `/opt/santa`, sous le compte root, avec le script exécutable. Créer `/opt/santa/.env` avec les permissions `0600` et les variables `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, `DATABASE_URL`, `AUTH_SECRET` et `AUTH_URL`. Utiliser `postgres` comme hôte dans `DATABASE_URL` et `https://<domaine>/api/auth` pour `AUTH_URL`.
 
-Configurer `deploy/Caddyfile` avec `SANTA_HOST`, le nom d’hôte public. Avec cette configuration, Caddy utilise le port 443 pour HTTPS et la validation ACME. Le profil Let's Encrypt `shortlived` permet de certifier une adresse IP publique. Le port 80 reste disponible pour Nginx. Caddy transmet `/santa` à Next.js sur `127.0.0.1:13000`. L’image de production inclut le préfixe `/santa`. Les données PostgreSQL résident dans le volume `santa_postgres_data`.
+Configurer `deploy/Caddyfile` avec `SANTA_HOST`, le nom d’hôte ou l’adresse IP publique. Caddy utilise le port 80 pour rediriger HTTP vers HTTPS et le port 443 pour HTTPS et la validation ACME. Le profil Let's Encrypt `shortlived` permet de certifier une adresse IP publique. Caddy transmet les requêtes à Next.js sur `127.0.0.1:13000`. Santa est accessible à la racine du domaine. Les données PostgreSQL résident dans le volume `santa_postgres_data`.
 
 Dans GitHub, définir les variables du dépôt `PRODUCTION_DEPLOY_ENABLED=true` et `PRODUCTION_SSH_HOST`, puis les secrets de l’environnement `production` `PRODUCTION_SSH_KEY` et `PRODUCTION_SSH_KNOWN_HOSTS`. Utiliser une clé dédiée, avec l’option `restrict,command="/opt/santa/release.sh"` sur la ligne correspondante de `/root/.ssh/authorized_keys`. Vérifier la clé d’hôte auprès de l’instance avant de renseigner le secret.
 

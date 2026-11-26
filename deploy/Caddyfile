@@ -1,5 +1,4 @@
 {
-	auto_https disable_redirects
 	default_sni {$SANTA_HOST}
 }
 
@@ -11,12 +10,5 @@
 		}
 	}
 
-	@santa path /santa /santa/*
-	handle @santa {
-		reverse_proxy 127.0.0.1:13000
-	}
-
-	handle {
-		respond 404
-	}
+	reverse_proxy 127.0.0.1:13000
 }

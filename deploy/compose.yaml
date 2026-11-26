@@ -28,7 +28,7 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "node", "-e", "Promise.all(['connexion', 'api/auth/providers'].map(path => fetch('http://127.0.0.1:3000/santa/' + path))).then(responses => { if (responses.some(r => !r.ok)) process.exitCode = 1 }).catch(() => { process.exitCode = 1 })"]
+      test: ["CMD", "node", "-e", "Promise.all(['connexion', 'api/auth/providers'].map(path => fetch('http://127.0.0.1:3000/' + path))).then(responses => { if (responses.some(r => !r.ok)) process.exitCode = 1 }).catch(() => { process.exitCode = 1 })"]
       interval: 5s
       timeout: 5s
       retries: 12
