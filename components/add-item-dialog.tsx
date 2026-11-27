@@ -98,7 +98,7 @@ function ItemLinks({ initialUrls, pending }: { initialUrls?: string[]; pending: 
 export function ItemDialog({
   onClose,
   item,
-  titleOnly = item !== undefined && !item.description && item.url.length === 0,
+  titleOnly = item?.is_section ?? false,
 }: {
   onClose: () => void;
   item?: ListItem;

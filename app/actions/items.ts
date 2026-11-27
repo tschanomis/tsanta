@@ -25,9 +25,9 @@ export async function addItem(_: ItemState, form: FormData): Promise<ItemState> 
 }
 
 function optionalFields(form: FormData): ItemState | { description: string | null; url: string[] } {
-  const description = form.get("description") ?? "";
+  const description = form.get("description");
   const urls = form.getAll("url");
-  if (typeof description !== "string" || description.trim().length > 2000) {
+  if (description !== null && (typeof description !== "string" || description.trim().length > 2000)) {
     return { error: "La description doit contenir au maximum 2 000 caractères.", success: false };
   }
   const itemUrls: string[] = [];
@@ -46,7 +46,8 @@ function optionalFields(form: FormData): ItemState | { description: string | nul
       return { error: "Saisis des liens valides commençant par http:// ou https://.", success: false };
     }
   }
-  return { description: description.trim() || null, url: itemUrls };
+  // Section forms omit the field. A gift can submit an empty description.
+  return { description: description?.trim() ?? null, url: itemUrls };
 }
 
 function isItemId(id: unknown): id is string {

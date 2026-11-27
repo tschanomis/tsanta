@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import { requireUser } from "@/lib/auth";
 import { database } from "@/lib/db";
 
-export type ListItem = { id: string; title: string; description: string | null; url: string[]; reserved_by: string | null; reserved_name: string | null };
+export type ListItem = { id: string; title: string; description: string | null; url: string[]; is_section: boolean; reserved_by: string | null; reserved_name: string | null };
 
 const itemOrder = "items.position ASC NULLS FIRST, items.created_at DESC, items.id";
 
@@ -12,6 +12,7 @@ export async function getUserItems(userId: string): Promise<ListItem[]> {
   await requireUser();
   const result = await database().query<ListItem>(
     `SELECT items.id, items.title, items.description, items.url, items.reserved_by,
+     (items.description IS NULL AND cardinality(items.url) = 0) AS is_section,
      CASE WHEN users.id IS NOT NULL THEN COALESCE(NULLIF(trim(users.name), ''), 'Nom non renseigné') END AS reserved_name
      FROM items LEFT JOIN users ON users.id = items.reserved_by
      WHERE items.user_id = $1 ORDER BY ${itemOrder}`,

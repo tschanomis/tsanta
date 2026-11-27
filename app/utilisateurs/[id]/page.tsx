@@ -28,7 +28,7 @@ async function UserList({ params }: UserPageProps) {
           <h2
             className={clsx(
               "min-w-0 wrap-break-word font-semibold",
-              !item.description && item.url.length === 0
+              item.is_section
                 ? "text-2xl tracking-tight sm:text-3xl"
                 : "text-lg",
             )}
@@ -36,11 +36,11 @@ async function UserList({ params }: UserPageProps) {
             {item.title}
           </h2>
           {ownList && <ItemControls item={item} />}
-          {!ownList && (item.description || item.url.length > 0) && (
+          {!ownList && !item.is_section && (
             <ItemReservation item={item} viewerId={viewer.id} />
           )}
         </div>
-        {!item.description && item.url.length === 0 && (
+        {item.is_section && (
           <hr className="mt-2 border-zinc-700" />
         )}
         {item.description && (
