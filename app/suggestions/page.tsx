@@ -6,7 +6,7 @@ import { getSuggestions } from "@/lib/data/suggestions";
 import { DeleteMessage, MessageForm } from "./message-form";
 import { isTheme, themes } from "./themes";
 
-export const metadata = { title: "Suggestions | Santa" };
+export const metadata = { title: "Suggestions | tschanta" };
 
 const batchSize = 10;
 
